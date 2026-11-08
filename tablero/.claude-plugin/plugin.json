@@ -1,0 +1,1 @@
+{ "name": "tablero", "version": "0.1.2", "description": "Panel y línea con contexto, límites de 5 h y semanal, costo, caché y sub-agentes con su modelo y contexto", "types": "./types/index.d.ts" }

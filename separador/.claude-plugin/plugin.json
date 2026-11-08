@@ -1,0 +1,5 @@
+{
+  "name": "separador",
+  "version": "0.1.2",
+  "description": "Una línea separadora arriba de lo que los mods dibujan sobre el prompt (token-weather, por ejemplo)"
+}

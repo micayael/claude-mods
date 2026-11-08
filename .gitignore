@@ -1,0 +1,5 @@
+# Tipos que genera Claude Code al cargar cada mod
+**/.claude-plugin/types/
+node_modules/
+# Notas de traspaso de sesiones (rutas y proyectos personales)
+HANDOFF.md

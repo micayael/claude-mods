@@ -1,0 +1,26 @@
+{
+  "name": "pendientes",
+  "version": "0.3.0",
+  "description": "Pendientes del proyecto como issues de GitHub/GitLab, en un panel lateral, con la tarea actual marcada y tildes en lo hecho",
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "currentLabel": {
+      "type": "string",
+      "title": "Etiqueta de la tarea actual",
+      "description": "Se le pone al issue en el que estamos trabajando (una columna del tablero, por ejemplo).",
+      "default": "In Process"
+    },
+    "doneLabel": {
+      "type": "string",
+      "title": "Etiqueta de tarea hecha",
+      "description": "Se le pone al issue tildado; el issue se cierra recién después del próximo push.",
+      "default": "Testing"
+    },
+    "closeLabel": {
+      "type": "string",
+      "title": "Etiqueta de cierre al pushear",
+      "description": "La pone el mod al tildar: marca los issues que se cierran cuando la rama principal llega al remoto. Lo que muevas a mano a la etiqueta de hecho, sin esta marca, no se cierra.",
+      "default": "Close on push"
+    }
+  }
+}

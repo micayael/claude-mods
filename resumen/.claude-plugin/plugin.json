@@ -1,0 +1,8 @@
+{
+  "name": "resumen",
+  "version": "0.1.4",
+  "author": { "name": "micayael" },
+  "description": "Resumen del trabajo en curso con /resumen y una banda sobre el prompt con la versión corta, la tarea actual y la rama",
+  "types": "./types/index.d.ts",
+  "dependencies": ["pendientes"]
+}

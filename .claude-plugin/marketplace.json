@@ -1,0 +1,24 @@
+{
+  "name": "micayael-mods",
+  "owner": {
+    "name": "micayael"
+  },
+  "plugins": [
+    {
+      "name": "pendientes",
+      "source": "./pendientes"
+    },
+    {
+      "name": "resumen",
+      "source": "./resumen"
+    },
+    {
+      "name": "separador",
+      "source": "./separador"
+    },
+    {
+      "name": "tablero",
+      "source": "./tablero"
+    }
+  ]
+}
