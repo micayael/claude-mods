@@ -9,6 +9,8 @@ const TITLE = 'Tablero'
 const usage = atom({ plugin: 'tablero', key: 'usage' } as const, null, { shape: 'usage-1' })
 const cache = atom({ plugin: 'tablero', key: 'cache' } as const, { read: 0, write: 0, fresh: 0 }, { shape: 'cache-1' })
 // Claude Code usa caché de 1 h con suscripción; en exceso de uso baja a 5 min.
+// Largo de la barra de contexto en la línea de arriba del prompt.
+const BAND_BAR = 16
 const CACHE_TTL_MS = 60 * 60_000
 const cacheAt = atom({ plugin: 'tablero', key: 'cacheAt' } as const, null, { shape: 'cacheAt-1' })
 const tick = atom({ plugin: 'tablero', key: 'tick' } as const, 0)
@@ -229,16 +231,20 @@ export const register: Register = on => {
     const below = await next(e)
     return (
       <Box flexDirection="column">
-      <Box>
-        {m && <Text bold>{modelLabel(m.model, m.effort)} </Text>}
-        {m && <Text dimColor>· </Text>}
-        <Text color={HUE.session}>ctx </Text>
-        <Text color={tone(u.percent)}>{Math.round(u.percent)}%</Text>
-        <Text dimColor> {k(u.tokens)}/{k(u.window)}</Text>
-        {five && <Text dimColor> · </Text>}
-        {five && <Text color={HUE.five_hour}>5h </Text>}
-        {five && <Text color={tone(five.percentUsed)}>{five.percentUsed}%</Text>}
-        {running > 0 && <Text dimColor> · {running} agente{running === 1 ? '' : 's'}</Text>}
+      <Box justifyContent="space-between">
+        <Text bold>{m ? modelLabel(m.model, m.effort) : ''}</Text>
+        <Box>
+          <Text color={HUE.session}>ctx </Text>
+          <Text color={tone(u.percent)}>{'━'.repeat(filled(u.percent, BAND_BAR))}</Text>
+          <Text color={TRACK}>{'━'.repeat(BAND_BAR - filled(u.percent, BAND_BAR))}</Text>
+          <Text color={tone(u.percent)} bold> {Math.round(u.percent)}%</Text>
+          <Text dimColor> {k(u.tokens)}/{k(u.window)}</Text>
+        </Box>
+        <Box>
+          {five && <Text color={HUE.five_hour}>5h </Text>}
+          {five && <Text color={tone(five.percentUsed)}>{five.percentUsed}%</Text>}
+          {running > 0 && <Text dimColor>{five ? '   ' : ''}{running} agente{running === 1 ? '' : 's'}</Text>}
+        </Box>
       </Box>
       {below}
       </Box>
