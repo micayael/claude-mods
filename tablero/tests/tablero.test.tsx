@@ -75,7 +75,8 @@ test('muestra contexto, límites, caché y sub-agentes', async ($, on) => {
   await ui.unmount()
 
   const band = await $.ui.mount({ plugin: 'tablero', component: 'AbovePrompt', props: {}, surface: 'terminal' })
-  expect(await band.find({ type: 'Text', text: /^61%$/ })).toBeTruthy()
+  expect(await band.find({ type: 'Text', text: /^23%$/ })).toBeTruthy()
+  expect(await band.find({ type: 'Text', text: /sem|caché/ })).toBeFalsy()
   await band.unmount()
 
   for await (const _ of $.turn.step({ turnId: 'm', index: 0, model: 'claude-opus-5-5', effort: 'high', messageCount: 1 })) {
@@ -166,6 +167,7 @@ test('la línea deja ver lo que dibujan los mods de abajo', async ($, on) => {
   await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
   const band = await $.ui.mount({ plugin: 'tablero', component: 'AbovePrompt', props: {}, surface: 'desktop' })
   expect(await band.find({ type: 'Text', text: /banda de resumen/ })).toBeTruthy()
-  expect(await band.find({ type: 'Text', text: /^61%$/ })).toBeTruthy()
+  expect(await band.find({ type: 'Text', text: /^23%$/ })).toBeTruthy()
+  expect(await band.find({ type: 'Text', text: /sem|caché/ })).toBeFalsy()
   await band.unmount()
 })

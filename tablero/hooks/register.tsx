@@ -103,7 +103,8 @@ async function seedMain($: EngineInterface) {
   }
   const model = pick(/^model$/i)
   const effort = pick(/effort/i)
-  if (model) await update($, main, cur => cur ?? { model, effort })
+  // La config no trae el esfuerzo: «…» marca que falta hasta el primer paso.
+  if (model) await update($, main, cur => cur ?? { model, effort: effort ?? '…' })
 }
 
 // Crea el sub-agente si todavía no está (sus primeros pasos pueden llegar antes que agent.spawn).
@@ -222,11 +223,7 @@ export const register: Register = on => {
     const list = await read($, agents)
     const running = list.filter(a => !a.isDone).length
     const m = await read($, main)
-    const week = u.limits.find(l => l.kind === 'seven_day')
     const five = u.limits.find(l => l.kind === 'five_hour')
-    const now = Math.max(await read($, tick), await $.clock.now())
-    const lastAt = await read($, cacheAt)
-    const cacheLeft = lastAt === null ? null : lastAt + CACHE_TTL_MS - now
 
     // Lo que dibujan los mods de abajo (resumen, por ejemplo) va debajo de esta línea.
     const below = await next(e)
@@ -241,16 +238,6 @@ export const register: Register = on => {
         {five && <Text dimColor> · </Text>}
         {five && <Text color={HUE.five_hour}>5h </Text>}
         {five && <Text color={tone(five.percentUsed)}>{five.percentUsed}%</Text>}
-        {week && <Text dimColor> · </Text>}
-        {week && <Text color={HUE.seven_day}>sem </Text>}
-        {week && <Text color={tone(week.percentUsed)}>{week.percentUsed}%</Text>}
-        {week && week.resetsAt && <Text dimColor> (reinicia en {inTime(week.resetsAt, now)})</Text>}
-        <Text dimColor> · caché {Math.round(hitRate(await read($, cache)))}%</Text>
-        {cacheLeft !== null && (
-          <Text color={cacheTone(cacheLeft)}>
-            {cacheLeft <= 0 ? ' vencida' : ` vence ${left(cacheLeft)}`}
-          </Text>
-        )}
         {running > 0 && <Text dimColor> · {running} agente{running === 1 ? '' : 's'}</Text>}
       </Box>
       {below}
